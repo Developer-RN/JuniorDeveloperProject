@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace JuniorDeveloperProject.Models
 {
+    /// <summary>
+    /// Used documentation for JSON serializer - https://www.newtonsoft.com/json/help/html/jsonpropertyname.html
+    /// </summary>
     public class UserBase
     {
-        /// <summary>
-        /// Used documentation for JSON serializer - https://www.newtonsoft.com/json/help/html/jsonpropertyname.html
-        /// </summary>
-
         [JsonProperty("id")]
         public int Id { get; set; }
 

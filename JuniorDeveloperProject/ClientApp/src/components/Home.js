@@ -5,22 +5,76 @@ export class Home extends Component {
 
   render () {
     return (
-      <div>
-        <h1>Hello, world!</h1>
-        <p>Welcome to your new single-page application, built with:</p>
-        <ul>
-          <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-          <li><a href='https://facebook.github.io/react/'>React</a> for client-side code</li>
-          <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-        </ul>
-        <p>To help you get started, we have also set up:</p>
-        <ul>
-          <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-          <li><strong>Development server integration</strong>. In development mode, the development server from <code>create-react-app</code> runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-          <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration produces minified, efficiently bundled JavaScript files.</li>
-        </ul>
-        <p>The <code>ClientApp</code> subdirectory is a standard React application based on the <code>create-react-app</code> template. If you open a command prompt in that directory, you can run <code>npm</code> commands such as <code>npm test</code> or <code>npm install</code>.</p>
-      </div>
+        <div>
+            <h1>Demo web application!</h1>
+
+            <div class="row">
+
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title">Task.</h2>
+                            <p class="card-text">Build an application which calls <a href="https://dwp-techtest.herokuapp.com" rel="external nofollow" target="blank">this API</a>, and returns people who are listed as either living in London, or whose current coordinates are within 50 miles of London.</p>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title">Answer.</h2>
+                            <p class="card-text">Table with results is presented in separate view.</p>
+                            <a class="btn btn-primary" href="/fetch-data">Fetch data</a>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title">Code.</h2>
+                            <p class="card-text">Code for this solution can be found in <a href="https://github.com/Developer-RN/ReactDemoProject/tree/master/ReactDemoProject" rel="external nofollow" target="blank">this Github repo</a>.</p>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title">Approach.</h2>
+                            <p class="card-text">Build an application which calls <a href="https://dwp-techtest.herokuapp.com" rel="external nofollow" target="blank">this API</a>, and returns people who are listed as either living in London, or whose current coordinates are within 50 miles of London.</p>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title">Used technologies and frameworks.</h2>
+                            <ul>
+                                <li class="list"><a href="https://reactjs.org/" rel="external nofollow" target="blank">ReactJS</a> client side web application (SPA)</li>
+                                <li class="list"><a href="https://dotnet.microsoft.com/en-us/" rel="external nofollow" target="blank">.NET 6.0</a> server side code</li>
+                                <li class="list"><a href="https://getbootstrap.com/" rel="external nofollow" target="blank">Bootstrap</a> client side web application styling</li>
+                                <li class="list"><a href="https://nodejs.org/en/" rel="external nofollow" target="blank">Node.js & Npm</a> runtime and package manager</li>
+                                <li class="list"><a href="https://visualstudio.microsoft.com/vs/" rel="external nofollow" target="blank">Microsoft Visual Studio 2022</a> integrated development environment (IDE)</li>
+                                <li class="list"><a href="https://aws.amazon.com/visualstudio/" rel="external nofollow" target="blank">AWS Toolkit for Visual Studio</a> IDE plug-in</li>
+                                <li class="list"><a href="https://aws.amazon.com/elasticbeanstalk/" rel="external nofollow" target="blank">AWS Elastic Beanstalk</a> easy-to-use platform as service (PaaS) for deploying and scaling web applications</li>
+                                <li class="list"><a href="https://github.com/" rel="external nofollow" target="blank">GitHub</a> source control management (GIT)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+
+            </div>
+
+
+
+        </div>
     );
   }
 }

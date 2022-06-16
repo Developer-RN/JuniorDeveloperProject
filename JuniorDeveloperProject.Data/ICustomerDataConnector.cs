@@ -2,7 +2,7 @@
 
 namespace JuniorDeveloperProject.Data
 {
-    internal interface ICustomerDataConnector
+    public interface ICustomerDataConnector
     {
         public Task<IEnumerable<UserBase>> GetUsersByCity(HttpClient httpClient, string apiBaseUrl, string apiGetUSersByCityPath, string city = "London");
         public Task<IEnumerable<UserBase>> GetAllUsers(HttpClient httpClient, string apiBaseUrl, string TechTestApiGetUsersPath);
