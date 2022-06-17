@@ -38,6 +38,7 @@ namespace JuniorDeveloperProject.Controllers
         [HttpGet]
         public IEnumerable<UserBase> Get(string city = "London")
         {
+            //throw new ArgumentException("Text Exception");
             string searchDistance = _configuration["ApplicationSettings:DefaultDistanceInMiles"];
             string searchBaseLatitude = _configuration["ApplicationSettings:DefaultCordinatesLat"];
             string searchBaseLongitude = _configuration["ApplicationSettings:DefaultCordinatesLong"];
@@ -48,6 +49,25 @@ namespace JuniorDeveloperProject.Controllers
 
             var httpClient = _httpClientFactory.CreateClient();
 
+            List<UserBase> allUsersList= new List<UserBase>();
+
+            getUsersFromLondon(allUsersList, httpClient, apiBaseUrl, apiGetUSersByCityPath, city);
+            getUsersByDistance(allUsersList, httpClient, apiBaseUrl, TechTestApiGetUsersPath, searchBaseLongitude, searchBaseLatitude, searchDistance);
+
+            if (allUsersList.Count() > 0)
+            {
+                return allUsersList.Distinct().ToList();
+            }
+            else
+            {
+                return allUsersList;
+            }
+
+        }
+        #endregion
+ private void getUsersFromLondon(List<UserBase> allUsersList, HttpClient httpClient, string apiBaseUrl, string apiGetUSersByCityPath, string city)
+            {
+
             List<UserBase> usersList = _dataLayer.GetUsersByCity(httpClient, apiBaseUrl, apiGetUSersByCityPath, city).Result.ToList();
             if (usersList == null) { usersList = new List<UserBase>(); };
 
@@ -57,35 +77,26 @@ namespace JuniorDeveloperProject.Controllers
                 {
                     user.City = "London";
                 }
+                allUsersList.Add(user);
             }
-
+        }
+    
+        private void getUsersByDistance(List<UserBase> allUsersList, HttpClient httpClient, string apiBaseUrl, string TechTestApiGetUsersPath, string searchBaseLongitude, string searchBaseLatitude, string searchDistance)
+        {
             List<UserBase> allOtherUsers = _dataLayer.GetAllUsers(httpClient, apiBaseUrl, TechTestApiGetUsersPath).Result.ToList();
             if (allOtherUsers != null)
             {
                 foreach (var user in allOtherUsers)
                 {
-                    double distanceInMeters = _dataLayer.GetDistance(Convert.ToDouble(searchBaseLongitude), Convert.ToDouble(searchBaseLatitude), user.Longitude, user.Latitude);
-                    double distanceInMiles = distanceInMeters / 1000 * 0.621371;
+                    double distanceInMiles = _dataLayer.GetDistance(Convert.ToDouble(searchBaseLongitude), Convert.ToDouble(searchBaseLatitude), user.Longitude, user.Latitude);
+
                     if (distanceInMiles <= Convert.ToInt64(searchDistance))
                     {
-                        user.City = "Distance from London - " + Math.Round(distanceInMiles, 2) + " miles";
-                        usersList.Add(user);
+                        user.City = "Distance from London - " + distanceInMiles + " miles";
+                        allUsersList.Add(user);
                     }
                 }
             }
-
-            if (usersList.Count() > 0)
-            {
-                return usersList.Distinct().ToList();
-            }
-            else
-            {
-                return null;
-            }
-
         }
-        #endregion
-
-    
 }
 }

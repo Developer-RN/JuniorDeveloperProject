@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import ErrorPage from './ErrorPages/Error.js';
 export class FetchData extends Component {
     static displayName = FetchData.name;
 
@@ -13,7 +13,7 @@ export class FetchData extends Component {
     }
 
     static renderDataTable(users, loadTime) {
-        return (
+       return (
             <div>
                 <table className='table table-striped' aria-labelledby="tabelLabel">
                     <thead>
@@ -51,18 +51,24 @@ export class FetchData extends Component {
     }
 
     render() {
-        let contents = this.state.loading
-            ? <p><em>Loading...</em></p>
-            : FetchData.renderDataTable(this.state.users, this.state.loadTime);
+        if (this.state.users.length > 0) {
+            let contents = this.state.loading
+                ? <p><em>Loading...</em></p>
+                : FetchData.renderDataTable(this.state.users, this.state.loadTime);
+            return (
+                <div>
+                    <h1 id="tabelLabel" >Answer.</h1>
+                    <p>List of people who are listed as either living in London, or whose current coordinates are within 50 miles of London.</p>
+                    <p>This component demonstrates fetching data from the server using .NET 6 HttpClientFactory server-side API calls.</p>
+                    {contents}
+                </div>
+            );
 
-        return (
-            <div>
-                <h1 id="tabelLabel" >Answer.</h1>
-                <p>List of people who are listed as either living in London, or whose current coordinates are within 50 miles of London.</p>
-                <p>This component demonstrates fetching data from the server using .NET 6 HttpClientFactory server-side API calls.</p>
-                {contents}
-            </div>
-        );
+        }
+
+        else {
+            return (<ErrorPage/> );
+        }
     }
 
     async populateDataTable() {

@@ -79,7 +79,8 @@ namespace JuniorDeveloperProject.Data
         /// <param name="latitude"></param>
         /// <param name="otherLongitude"></param>
         /// <param name="otherLatitude"></param>
-        /// <returns>double distance (in meters)</returns>
+        /// <returns>double distance (in Miles)</returns>
+        /// 1 meter is 0.000621371 miles
         public double GetDistance(double longitude1, double latitude1, double longitude2, double latitude2)
         {
             double distance1 = latitude1 * (Math.PI / 180.0);
@@ -87,8 +88,9 @@ namespace JuniorDeveloperProject.Data
             double distance2 = latitude2 * (Math.PI / 180.0);
             double num2 = longitude2 * (Math.PI / 180.0) - num1;
             double distance3 = Math.Pow(Math.Sin((distance2 - distance1) / 2.0), 2.0) + Math.Cos(distance1) * Math.Cos(distance2) * Math.Pow(Math.Sin(num2 / 2.0), 2.0);
-
-            return 6376500.0 * (2.0 * Math.Atan2(Math.Sqrt(distance3), Math.Sqrt(1.0 - distance3)));
+            double distanceInMeters = 6376500.0 * (2.0 * Math.Atan2(Math.Sqrt(distance3), Math.Sqrt(1.0 - distance3)));
+            
+            return Math.Round(distanceInMeters / 1000 * 0.621371,2, MidpointRounding.AwayFromZero);
         }
     }
 }
