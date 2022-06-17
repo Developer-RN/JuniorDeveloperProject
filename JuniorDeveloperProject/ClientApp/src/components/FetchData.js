@@ -1,59 +1,81 @@
 import React, { Component } from 'react';
-
+import ErrorPage from './ErrorPages/Error.js';
 export class FetchData extends Component {
-  static displayName = FetchData.name;
+    static displayName = FetchData.name;
 
-  constructor(props) {
-    super(props);
-    this.state = { forecasts: [], loading: true };
-  }
+    constructor(props) {
+        super(props);
+        this.state = { users: [], loading: true, loadTime: 0 };
+    }
 
-  componentDidMount() {
-    this.populateWeatherData();
-  }
+    componentDidMount() {
+        this.populateDataTable();
+    }
 
-  static renderForecastsTable(forecasts) {
-    return (
-      <table className='table table-striped' aria-labelledby="tabelLabel">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
-          </tr>
-        </thead>
-        <tbody>
-          {forecasts.map(forecast =>
-            <tr key={forecast.date}>
-              <td>{forecast.date}</td>
-              <td>{forecast.temperatureC}</td>
-              <td>{forecast.temperatureF}</td>
-              <td>{forecast.summary}</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    );
-  }
+    static renderDataTable(users, loadTime) {
+       return (
+            <div>
+                <table className='table table-striped' aria-labelledby="tabelLabel">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>IP Address</th>
+                            <th>Location</th>
+                            <th>Latitude</th>
+                            <th>Longtitude</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {users.map(user =>
+                            <tr key={user.id}>
+                                <td>{user.id}</td>
+                                <td>{user.firstName}</td>
+                                <td>{user.lastName}</td>
+                                <td>{user.email}</td>
+                                <td>{user.ipAddress}</td>
+                                <td>{user.city}</td>
+                                <td>{user.latitude}</td>
+                                <td>{user.longitude}</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+                <div>
+                    <p>Time taken to find and load {users.length} matching records: {loadTime} seconds.</p>
+                </div>
+            </div>
+        );
+    }
 
-  render() {
-    let contents = this.state.loading
-      ? <p><em>Loading...</em></p>
-      : FetchData.renderForecastsTable(this.state.forecasts);
+    render() {
+        if (this.state.users.length > 0) {
+            let contents = this.state.loading
+                ? <p><em>Loading...</em></p>
+                : FetchData.renderDataTable(this.state.users, this.state.loadTime);
+            return (
+                <div>
+                    <h1 id="tabelLabel" >Answer.</h1>
+                    <p>List of people who are listed as either living in London, or whose current coordinates are within 50 miles of London.</p>
+                    <p>This component demonstrates fetching data from the server using .NET 6 HttpClientFactory server-side API calls.</p>
+                    {contents}
+                </div>
+            );
 
-    return (
-      <div>
-        <h1 id="tabelLabel" >Weather forecast</h1>
-        <p>This component demonstrates fetching data from the server.</p>
-        {contents}
-      </div>
-    );
-  }
+        }
 
-  async populateWeatherData() {
-    const response = await fetch('weatherforecast');
-    const data = await response.json();
-    this.setState({ forecasts: data, loading: false });
-  }
+        else {
+            return (<ErrorPage/> );
+        }
+    }
+
+    async populateDataTable() {
+        const startDateAndTime = new Date();
+        const response = await fetch('getusers?city=London');
+        const data = await response.json();
+        const timeTaken = ((new Date()).getTime() - startDateAndTime.getTime()) / 1000;
+        this.setState({ users: data, loading: false, loadTime: timeTaken });
+    }
 }
