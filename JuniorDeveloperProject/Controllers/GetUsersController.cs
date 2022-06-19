@@ -82,7 +82,7 @@ namespace JuniorDeveloperProject.Controllers
 
             try
             {
-                List<UserBase> usersList = responseBase.Result.UserList.ToList();//_dataLayer.GetUsersByCity(httpClient, apiBaseUrl, apiGetUSersByCityPath, city).Result.UserList.ToList();
+                List<UserBase> usersList = responseBase.Result.UserList.ToList();
                 if (usersList == null) { usersList = new List<UserBase>(); };
 
                 foreach (var user in usersList)

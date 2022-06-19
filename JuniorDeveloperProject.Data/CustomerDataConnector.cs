@@ -88,7 +88,7 @@ namespace JuniorDeveloperProject.Data
                 }
                 else
                 {
-                    responseBase.ResponseCode = httpResponseMessage.StatusCode.ToString(); //httpResponseMessage.StatusCode.ToString();
+                    responseBase.ResponseCode = httpResponseMessage.StatusCode.ToString();
                     responseBase.ResponseDescription = "Error Accesing API";
                 }
                 return responseBase;
