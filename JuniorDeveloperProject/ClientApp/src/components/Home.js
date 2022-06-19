@@ -35,7 +35,7 @@ export class Home extends Component {
                     <div class="card">
                         <div class="card-body">
                             <h2 class="card-title">Code.</h2>
-                            <p class="card-text">Code for this solution can be found in <a href="https://github.com/Developer-RN/ReactDemoProject/tree/master/ReactDemoProject" rel="external nofollow" target="blank">this Github repo</a>.</p>
+                            <p class="card-text">Code for this solution can be found in <a href="https://github.com/Developer-RN/JuniorDeveloperProject" rel="external nofollow" target="blank">this Github repo</a>.</p>
                         </div>
                     </div>
                     <br />
