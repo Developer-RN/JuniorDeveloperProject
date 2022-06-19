@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import ErrorPage from './ErrorPages/Error.js';
+
+
+import ErrorPage400 from './ErrorPages/Error400.js';
+import ErrorPage404 from './ErrorPages/Error404.js';
+import ErrorPage500 from './ErrorPages/Error500.js';
 export class FetchData extends Component {
     static displayName = FetchData.name;
 
     constructor(props) {
         super(props);
-        this.state = { users: [], loading: true, loadTime: 0 };
+        this.state = { users: [], responseCode: "", responseDescription: "", loading: true, loadTime: 0 };
     }
 
     componentDidMount() {
@@ -13,7 +17,7 @@ export class FetchData extends Component {
     }
 
     static renderDataTable(users, loadTime) {
-       return (
+        return (
             <div>
                 <table className='table table-striped' aria-labelledby="tabelLabel">
                     <thead>
@@ -51,7 +55,9 @@ export class FetchData extends Component {
     }
 
     render() {
-        if (this.state.users.length > 0) {
+        if (this.state.responseCode === "200") {
+            console.log(this.state.responseCode);
+       // if (this.state.users.length > 0) {
             let contents = this.state.loading
                 ? <p><em>Loading...</em></p>
                 : FetchData.renderDataTable(this.state.users, this.state.loadTime);
@@ -65,9 +71,18 @@ export class FetchData extends Component {
             );
 
         }
-
+        else if (this.state.responseCode === "400") {
+            return <p><ErrorPage400 /></p>;
+        }
+        else if (this.state.responseCode === "404") {
+            return <p><ErrorPage404 /></p>;
+        }
+        else if (this.state.responseCode === "500") {
+            return <p><ErrorPage500/></p>;
+        }
         else {
-            return (<ErrorPage/> );
+            console.log(this.state.responseCode);
+            return <p><em>Loading...</em></p>;
         }
     }
 
@@ -76,6 +91,7 @@ export class FetchData extends Component {
         const response = await fetch('getusers?city=London');
         const data = await response.json();
         const timeTaken = ((new Date()).getTime() - startDateAndTime.getTime()) / 1000;
-        this.setState({ users: data, loading: false, loadTime: timeTaken });
+       console.log(data);
+        this.setState({ users: data.userList, responseCode: data.responseCode, responseDescription: data.responseDescription, loading: false, loadTime: timeTaken });
     }
 }

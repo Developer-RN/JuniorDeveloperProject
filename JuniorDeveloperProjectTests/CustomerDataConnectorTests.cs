@@ -36,7 +36,7 @@ namespace JuniorDeveloperProjectTests
         string apiBaseUrl = "https://dwp-techtest.herokuapp.com";
         string TechTestApiGetUsersPath = "/users";
           
-        List<UserBase> usersList = customerDataConnector.GetAllUsers(httpClient, apiBaseUrl, TechTestApiGetUsersPath).Result.ToList();
+        List<UserBase> usersList = customerDataConnector.GetAllUsers(httpClient, apiBaseUrl, TechTestApiGetUsersPath).Result.UserList.ToList();
 
         CollectionAssert.IsNotEmpty(usersList);
           
