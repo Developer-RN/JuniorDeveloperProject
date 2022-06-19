@@ -36,7 +36,7 @@ namespace JuniorDeveloperProject.Controllers
 
         #region ACTIONS
         [HttpGet]
-        public IEnumerable<UserBase> Get(string city = "London")
+        public Task<ResponseBase> Get(string city = "London")
         {
             //throw new ArgumentException("Text Exception");
             string searchDistance = _configuration["ApplicationSettings:DefaultDistanceInMiles"];
@@ -50,40 +50,62 @@ namespace JuniorDeveloperProject.Controllers
             var httpClient = _httpClientFactory.CreateClient();
 
             List<UserBase> allUsersList= new List<UserBase>();
+            string code = "";
+           Task<ResponseBase> responseBaseByCity = getUsersFromLondon( code, allUsersList, httpClient, apiBaseUrl, apiGetUSersByCityPath, city);
 
-            getUsersFromLondon(allUsersList, httpClient, apiBaseUrl, apiGetUSersByCityPath, city);
-            getUsersByDistance(allUsersList, httpClient, apiBaseUrl, TechTestApiGetUsersPath, searchBaseLongitude, searchBaseLatitude, searchDistance);
+            Task<ResponseBase> responseBaseByDistance = getUsersByDistance(allUsersList, httpClient, apiBaseUrl, TechTestApiGetUsersPath, searchBaseLongitude, searchBaseLatitude, searchDistance);
 
-            if (allUsersList.Count() > 0)
+             if (allUsersList.Count() > 0)
+             {
+                  allUsersList.Distinct().ToList();
+             }
+
+            if (responseBaseByCity.Result.ResponseCode != null && responseBaseByDistance.Result.ResponseCode != null)
             {
-                return allUsersList.Distinct().ToList();
-            }
-            else
-            {
-                return allUsersList;
+               
+                if(responseBaseByCity.Result.ResponseCode != "200")
+                {
+
+                    responseBaseByDistance.Result.ResponseCode = responseBaseByCity.Result.ResponseCode;
+                }
             }
 
+            responseBaseByDistance.Result.UserList = allUsersList;
+            
+            
+            return responseBaseByDistance;
         }
         #endregion
- private void getUsersFromLondon(List<UserBase> allUsersList, HttpClient httpClient, string apiBaseUrl, string apiGetUSersByCityPath, string city)
+        private Task<ResponseBase> getUsersFromLondon(string code,List<UserBase> allUsersList, HttpClient httpClient, string apiBaseUrl, string apiGetUSersByCityPath, string city)
             {
+             Task < ResponseBase > responseBase = _dataLayer.GetUsersByCity(httpClient, apiBaseUrl, apiGetUSersByCityPath, city);
 
-            List<UserBase> usersList = _dataLayer.GetUsersByCity(httpClient, apiBaseUrl, apiGetUSersByCityPath, city).Result.ToList();
-            if (usersList == null) { usersList = new List<UserBase>(); };
-
-            foreach (var user in usersList)
+            try
             {
-                if (String.IsNullOrEmpty(user.City))
+                List<UserBase> usersList = responseBase.Result.UserList.ToList();
+                if (usersList == null) { usersList = new List<UserBase>(); };
+
+                foreach (var user in usersList)
                 {
-                    user.City = "London";
+                    if (String.IsNullOrEmpty(user.City))
+                    {
+                        user.City = "London";
+                    }
+                    allUsersList.Add(user);
                 }
-                allUsersList.Add(user);
             }
+            catch (ArgumentNullException e)
+            {
+
+                responseBase.Result.ResponseCode = "400";
+            }
+            return responseBase;
         }
     
-        private void getUsersByDistance(List<UserBase> allUsersList, HttpClient httpClient, string apiBaseUrl, string TechTestApiGetUsersPath, string searchBaseLongitude, string searchBaseLatitude, string searchDistance)
+        private Task<ResponseBase> getUsersByDistance(List<UserBase> allUsersList, HttpClient httpClient, string apiBaseUrl, string TechTestApiGetUsersPath, string searchBaseLongitude, string searchBaseLatitude, string searchDistance)
         {
-            List<UserBase> allOtherUsers = _dataLayer.GetAllUsers(httpClient, apiBaseUrl, TechTestApiGetUsersPath).Result.ToList();
+            Task<ResponseBase> responseBase = _dataLayer.GetAllUsers(httpClient, apiBaseUrl, TechTestApiGetUsersPath);
+            List<UserBase> allOtherUsers = responseBase.Result.UserList.ToList();
             if (allOtherUsers != null)
             {
                 foreach (var user in allOtherUsers)
@@ -97,6 +119,7 @@ namespace JuniorDeveloperProject.Controllers
                     }
                 }
             }
+            return responseBase;
         }
 }
 }

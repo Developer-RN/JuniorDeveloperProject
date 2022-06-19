@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import designImage from './designDiagram.png';
 
 export class Home extends Component {
   static displayName = Home.name;
@@ -7,7 +8,6 @@ export class Home extends Component {
     return (
         <div>
             <h1>Demo web application!</h1>
-
             <div class="row">
 
                 <div class="col-sm-12">
@@ -45,7 +45,11 @@ export class Home extends Component {
                     <div class="card">
                         <div class="card-body">
                             <h2 class="card-title">Approach.</h2>
-                            <p class="card-text">Build an application which calls <a href="https://dwp-techtest.herokuapp.com" rel="external nofollow" target="blank">this API</a>, and returns people who are listed as either living in London, or whose current coordinates are within 50 miles of London.</p>
+                            <p class="card-text">This was my first attempt to build  an application which calls <a href="https://dwp-techtest.herokuapp.com" rel="external nofollow" target="blank">this API</a>, and returns people who are listed as either living in London, or whose current coordinates are within 50 miles of London. I used AWS and deployed the application using beanstalk. For the code I used .Net core and react js template. The code is written in c#, javacript and Bootstrap to make the application mobile responsive. I am also learning serveless application.
+                            </p>
+                            <div>
+
+                            </div>
                         </div>
                     </div>
                     <br />
