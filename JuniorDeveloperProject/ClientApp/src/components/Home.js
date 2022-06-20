@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import designImage from './designDiagram.png';
 
 export class Home extends Component {
   static displayName = Home.name;
